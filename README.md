@@ -63,13 +63,6 @@ vagrant ssh
 kubectl get pods -A
 ```
 
-### Access to exposed services from host
-```
-vagrant ssh -c 'bash -ci tunnel'
-
-curl PRIVATE_NETWORK_IP:80/exposed-svc
-```
-
 ### Access to kubernetes dashboard from host
 ```
 vagrant ssh -c 'bash -ci dashboard'
@@ -77,19 +70,29 @@ vagrant ssh -c 'bash -ci dashboard'
 http://PRIVATE_NETWORK_IP:9999/api/v1/namespaces/kubernetes-dashboard/services/http:kubernetes-dashboard:/proxy/#/workloads?namespace=default
 ```
 
+### Access to exposed services from host
+```
+vagrant ssh -c 'bash -ci tunnel'
+
+curl PRIVATE_NETWORK_IP:80/exposed-svc
+```
+
 # Example
 
 This example will create an ingress (foo-ingress) listening on port 80 and routing to the corresponding service (foo-service) targeting pod (foo-app) on port 8080.
 
 ```
+vagrant ssh
+
 kubectl apply -f https://raw.githubusercontent.com/flysteur-dev/minikube-vagrant/master/examples/ingress.yaml
 
-vagrant ssh -c 'bash -ci tunnel'
 ```
 
 From the host
 
 ```
+vagrant ssh -c 'bash -ci tunnel'
+
 curl http://172.20.128.2/foo
 
 ============================================
